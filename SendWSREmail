@@ -1,0 +1,64 @@
+// @ts-nocheck
+function sendWsrEmail() {
+  // Consider making this configurable
+  var folderId = "<<Folder Id where the status report is hosted>>";
+ 
+  try {
+    var files = DriveApp.getFolderById(folderId).getFiles();
+
+    while (files.hasNext()) {
+      var file = files.next();
+      var fileURL = file.getUrl();
+      Logger.log(file.getName());
+      var emailAddresses=['<<Email1>>',<<'Email2>>];
+      var ccemailAddresses=['<<Email1>>'];
+      
+      var message = "<html> Dear Team,<br>Please find attached this week's status report for the ABC project.  <br><br> Regards,<br>Honest PgM</html>";
+     // var message = message+ "<html> <br><br>This is an automatic email sent using Apps Script. Click <a href=https://developers.google.com/apps-script> here </a> to learn more</html>";
+      Logger.log("Email addresses: " + emailAddresses.join(",")); 
+      // @ts-ignore
+      sendDate=new Date();
+      dd=sendDate.getDate().toString().padStart(2,"0");
+      mm_temp=sendDate.getMonth()+1;
+      mm=mm_temp.toString().padStart(2,"0");
+      var subject="ABC Project - Status Report (Week of "+mm+dd+" )";
+      MailApp.sendEmail({
+          to: emailAddresses.join(","), 
+          cc: ccemailAddresses.join(","),
+          subject: subject,
+          htmlBody: message,
+          attachments: [file.getAs(MimeType.PDF)]
+        });
+    //file.moveTo(archiveFolderId);
+    }
+  } catch (error) {
+    Logger.log("Error encountered: " + error.message);
+  }
+  wsrCopyAndRename();
+}
+
+function wsrCopyAndRename() {
+    // Log the name of every file in the user's Drive.
+    var files = DriveApp.getFolderById("<<Folder Id where the status report is hosted>>").getFiles(); 
+    var archiveFolder = DriveApp.getFolderById("<<Archive Folder Id where the status report should be archived>>").getFolders();
+  //  archiveFolderId=archiveFolder.next(); 
+    Logger.log(archiveFolderId);
+    var date=new Date();
+    var date7 = new Date(date.getTime()+7*(24*3600*1000));
+    day=date.getDate().toString().padStart(2,"0");
+    month_temp=date.getMonth()+1;
+    month=month_temp.toString().padStart(2,"0");
+    year=date.getFullYear().toString().padStart(2,"0");
+    while (files.hasNext()) {
+      var file = files.next();
+      file.makeCopy();
+      file.setName(file.getName()+" "+year+month+day);
+      file.moveTo(archiveFolderId);
+      Logger.log(file.getName());
+  }
+    var files = DriveApp.getFolderById("<<Folder Id where the status report is hosted>>").getFiles(); 
+    while (files.hasNext()) {
+    var file = files.next();
+    file.setName(file.getName().substring(8,100));
+  }
+}
