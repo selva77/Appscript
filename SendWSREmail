@@ -2,16 +2,18 @@
 function sendWsrEmail() {
   // Consider making this configurable
   var folderId = "<<Folder Id where the status report is hosted>>";
- 
+  var archiveFolderId = "<<Folder Id where the status report is archived>>";
+  var emailAddresses=['<<Email1>>',<<'Email2>>'];
+  var ccemailAddresses=['<<Email1>>'];
+      
   try {
     var files = DriveApp.getFolderById(folderId).getFiles();
+    var subject="ABC Project - Status Report (Week of "+mm+dd+" )";  
 
     while (files.hasNext()) {
       var file = files.next();
       var fileURL = file.getUrl();
       Logger.log(file.getName());
-      var emailAddresses=['<<Email1>>',<<'Email2>>];
-      var ccemailAddresses=['<<Email1>>'];
       
       var message = "<html> Dear Team,<br>Please find attached this week's status report for the ABC project.  <br><br> Regards,<br>Honest PgM</html>";
      // var message = message+ "<html> <br><br>This is an automatic email sent using Apps Script. Click <a href=https://developers.google.com/apps-script> here </a> to learn more</html>";
@@ -21,7 +23,6 @@ function sendWsrEmail() {
       dd=sendDate.getDate().toString().padStart(2,"0");
       mm_temp=sendDate.getMonth()+1;
       mm=mm_temp.toString().padStart(2,"0");
-      var subject="ABC Project - Status Report (Week of "+mm+dd+" )";
       MailApp.sendEmail({
           to: emailAddresses.join(","), 
           cc: ccemailAddresses.join(","),
@@ -34,13 +35,13 @@ function sendWsrEmail() {
   } catch (error) {
     Logger.log("Error encountered: " + error.message);
   }
-  wsrCopyAndRename();
+  wsrCopyAndRename(folderId,archiveFolderId);
 }
 
-function wsrCopyAndRename() {
+function wsrCopyAndRename(folderId,archiveFolderId) {
     // Log the name of every file in the user's Drive.
-    var files = DriveApp.getFolderById("<<Folder Id where the status report is hosted>>").getFiles(); 
-    var archiveFolder = DriveApp.getFolderById("<<Archive Folder Id where the status report should be archived>>").getFolders();
+    var files = DriveApp.getFolderById(folderId).getFiles(); 
+    var archiveFolder = DriveApp.getFolderById(archiveFolderId).getFolders();
   //  archiveFolderId=archiveFolder.next(); 
     Logger.log(archiveFolderId);
     var date=new Date();
