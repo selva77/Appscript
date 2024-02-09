@@ -57,7 +57,7 @@ function wsrCopyAndRename(folderId,archiveFolderId) {
       file.moveTo(archiveFolderId);
       Logger.log(file.getName());
   }
-    var files = DriveApp.getFolderById("<<Folder Id where the status report is hosted>>").getFiles(); 
+    var files = DriveApp.getFolderById(folderId).getFiles(); 
     while (files.hasNext()) {
     var file = files.next();
     file.setName(file.getName().substring(8,100));
