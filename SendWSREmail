@@ -5,10 +5,10 @@ function sendWsrEmail() {
   var archiveFolderId = "<<Folder Id where the status report is archived>>";
   var emailAddresses=['<<Email1>>',<<'Email2>>'];
   var ccemailAddresses=['<<Email1>>'];
+  var subject="ABC Project - Status Report (Week of "+mm+dd+" )";  
       
   try {
     var files = DriveApp.getFolderById(folderId).getFiles();
-    var subject="ABC Project - Status Report (Week of "+mm+dd+" )";  
 
     while (files.hasNext()) {
       var file = files.next();
