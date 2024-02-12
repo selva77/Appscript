@@ -1,0 +1,17 @@
+function sendWsrReminderEmails() {
+var files = DriveApp.getFolderById("1-nVuWHeMAyh6yv3DUjNxKf0Wn0nQj340").getFiles();
+   var file = files.next();
+   fileURL=file.getUrl();
+   Logger.log(file.getName());
+  var emailAddress=[""];
+  emailAddress.forEach(logValue);
+}
+
+function logValue(value){
+  Logger.log(value);
+  var message = "Hi, \nThis is an automated reminder to update your scrum status before Weekly Delivery Sync. Please ignore this email if you have already completed your update.";
+  message=message+"\n\nThe current version of the file is here:  "+fileURL;
+  message=message+"\n\nRegards,\nYours Truly"
+  var subject = "[REMINDER] Scrum Status Update";
+  MailApp.sendEmail(value, subject, message);
+}
