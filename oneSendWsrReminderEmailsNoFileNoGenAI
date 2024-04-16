@@ -1,8 +1,7 @@
 function oneSendWsrReminderEmailsNoFileNoGenAI() {
   const myEmail = Session.getActiveUser().getEmail();
   //Update the recepient email addresses
-   var emailAddresses=[myEmail,"selvaj@google.com"];
-   //var bccemailAddresses=["selvaj@google.com"]
+   var emailAddresses=[myEmail];
    var ccemailAddresses = [''];
    var bccemailAddresses=[''];
   
