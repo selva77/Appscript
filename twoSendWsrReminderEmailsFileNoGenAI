@@ -1,0 +1,26 @@
+function twoSendWsrReminderEmailsFileNoGenAI() {
+var files = DriveApp.getFolderById("<<Folder Id>>").getFiles();
+   var file = files.next();
+   fileURL=file.getUrl();
+   Logger.log(file.getName());
+  
+  const myEmail = Session.getActiveUser().getEmail();
+  //Update the recepient email addresses
+  var emailAddresses=[myEmail];
+  var ccemailAddresses = [''];
+  var bccemailAddresses=[''];
+  
+  //Update the email message you want to send
+  var message="";
+  message = message+"<br>--------<br>Hi, <br>This is an automated reminder to update your scrum status before Weekly Delivery Sync. Please ignore this email if you have already completed your update";
+  message=message+"<br><b>The current version of the file is here</b>:  "+fileURL;
+  message=message+"<br>Regards,<br>Workspace Wizard</html>"
+      var subject = "[REMINDER] Weekly Status Report Update";
+      MailApp.sendEmail({
+          to: emailAddresses.join(","), 
+          cc: ccemailAddresses.join(","),
+          bcc: bccemailAddresses.join(","),
+          subject: subject,
+          htmlBody: message
+        });
+}
